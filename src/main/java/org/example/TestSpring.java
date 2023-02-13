@@ -10,10 +10,23 @@ public class TestSpring {
 
         //Music music = context.getBean("musicBean", Music.class);
         //MusicPlayer musicPlayer = new MusicPlayer(music);
-        MusicPlayer musicPlayer = context.getBean("musicPlayer", MusicPlayer.class);
-        musicPlayer.playMusic();
+        MusicPlayer firstMusicPlayer = context.getBean("musicPlayer", MusicPlayer.class);
+        MusicPlayer secondMusicPlayer = context.getBean("musicPlayer", MusicPlayer.class);
 
-        System.out.println("Volume: " + musicPlayer.getVolume());
+        // Singleton - both pointing on the same object
+        // Prototype - different objects for every "getBean"
+        boolean linkCompare = firstMusicPlayer == secondMusicPlayer;
+        boolean objectCompare = firstMusicPlayer.equals(secondMusicPlayer);
+
+        System.out.println(linkCompare + " " + objectCompare);
+
+        firstMusicPlayer.playMusic();
+
+        firstMusicPlayer.setVolume(10);
+        // Singleton - Since it pointing on the same object, volume changed for both links
+        // Prototype - changing volume only on one device
+        System.out.println("Volume: " + firstMusicPlayer.getVolume());
+        System.out.println("Volume: " + secondMusicPlayer.getVolume());
 
         context.close();
     }
