@@ -1,7 +1,6 @@
 package org.example;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
 import java.sql.SQLOutput;
 
 public class TestSpring {

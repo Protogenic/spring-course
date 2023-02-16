@@ -1,22 +1,31 @@
 package org.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
 public class MusicPlayer {
-    private ClassicalMusic classicalMusic;
-    private RockMusic rockMusic;
+    private RockMusic rock;
+    private ClassicalMusic classic;
     // IoC
 
     @Autowired
-    public MusicPlayer(ClassicalMusic classicalMusic, RockMusic rockMusic) {
-        this.classicalMusic = classicalMusic;
-        this.rockMusic = rockMusic;
+    public MusicPlayer(@Qualifier("rockMusic") Music music1,
+                       @Qualifier("classicalMusic") Music music2) {
+        // @Qualifier tells which bean use if there are multiple options
+        this.rock = (RockMusic) music1;
+        this.classic = (ClassicalMusic) music2;
     }
 
-    public String playMusic() {
-        return "Playing: " + rockMusic.getSong();
+    public String playMusic(Genres genre) {
+        if (genre == Genres.CLASSICAL) {
+            return "Playing: " + classic.getSong();
+        }
+        if (genre == Genres.ROCK) {
+            return "Playing: " + rock.getSong();
+        }
+        return "";
     }
 
     // Can use @Autowired there
